@@ -67,7 +67,7 @@ L.DrillBoundaries = L.FeatureGroup.extend({
 
     // If current level has selected, unselect it first
     const nextLevel = this._showLevel(
-      this._currLevel - currSelected ? 0 : 1
+      this._currLevel - (currSelected ? 0 : 1)
     );
     this._levels[this._currLevel].selected = null;
 
