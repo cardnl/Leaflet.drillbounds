@@ -17,7 +17,7 @@ Include this plugin CSS and JS in your page along with leaflet-pip:
 ```
 
 ### Examples
-See the included demo for usage.
+See the included [demo](https://cardnl.github.io/Leaflet.drillbounds/demo/) for usage.
 
 ### Usage
 
