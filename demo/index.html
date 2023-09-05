@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <title>Drillbounds Demo</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <!-- Leaflet & plugins -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+      integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+      crossorigin=""/>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+      integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+      crossorigin=""></script>
+    <script src="./leaflet-pip.js"></script>
+    <link rel="stylesheet" href="../DrillBounds.Default.css" />
+    <script src="../leaflet.drillbounds.js"></script>
+    <style>
+      #viewer-map {
+        width: 680px;
+        height: 480px;
+      }
+    </style>
+  </head>
+<body>
+    <div id="viewer-map"></div>
+    <script>
+      const map = L.map('viewer-map').setView([49.8167, 6.1333], 10);
+      map.addLayer(L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        "maxZoom": 20,
+        "attribution": "&copy; <a href=\"https://www.openstreetmap.org/copyright\">OpenStreetMap</a> contributors, &copy; <a href=\"https://www.geoboundaries.org\">geoBoundaries</a>"
+      }));
+
+      // Load Luxembourg's boundaries
+      const drillBounds = L.drillBoundaries();
+      Promise.allSettled([
+        './geoBoundaries/LUX/ADM0.geojson',
+        './geoBoundaries/LUX/ADM1.geojson',
+        './geoBoundaries/LUX/ADM2.geojson'
+      ].map(i => fetch(i).then(i => i.json())))
+        .then(res => res.map(i => i.value)).then(jsons => {
+          // Load each GeoJSON and add to drill boundaries
+          jsons.forEach((json, level) => {
+            drillBounds.addLayerAt(level, L.geoJSON(json))
+          })
+          drillBounds.addTo(map)
+        })
+
+      // Bindings
+      drillBounds.on('drill', function(evt) {
+        const props = evt.layer.feature.properties
+        const output = Object.keys(props).reduce((acc, k) => `${acc}\n${k}: ${props[k]}\n`, '')
+        document.querySelector('#output').innerText = output;
+      })
+    </script>
+    <button onclick="drillBounds.drillUp()">Drill up</button>
+    <pre id="output"></pre>
+  </body>
+</html>
