@@ -5,25 +5,28 @@ L.DrillBoundaries = L.FeatureGroup.extend({
     this._levels[0].group.addEventParent(this);
     this._currLevel = 0;
     this._enabled = true;
-
+    
+    const styles = this.options.styles || {};
     this._styles = {
       hidden: {
         fill: false,
-        weight: 0
+        weight: 0,
+        ...(styles.hidden || {})
       },
       default: {
         fill: true,
         fillColor: '#777',
         fillOpacity: 0.5,
         color: 'white',
-        weight: 2
+        weight: 2,
+        ...(styles.default || {})
       },
       selected: {
         fill: false,
         color: '#ffaf3b',
-        weight: 5
-      },
-      ...(options ? (options.styles || {}) : {})
+        weight: 5,
+        ...(styles.selected || {})
+      }
     };
   },
   _getSelected: function () {
