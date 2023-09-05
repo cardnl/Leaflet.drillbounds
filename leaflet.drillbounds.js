@@ -23,7 +23,7 @@ L.DrillBoundaries = L.FeatureGroup.extend({
         color: '#ffaf3b',
         weight: 5
       },
-      ...(options.styles || {})
+      ...(options ? (options.styles || {}) : {})
     };
   },
   _getSelected: function () {
