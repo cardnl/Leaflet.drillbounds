@@ -67,18 +67,18 @@ This drills out of the current selected boundary.
 
 ### Bindings
 
-The two bindings implemented on top of `L.FeatureGroup` events are: `drill` and `click`:
+The bindings implemented on top of `L.FeatureGroup` events are: `drill`, `drilldown`, and `drillup`
 
-**Drill** is fired on both drill up & drill down.
+`drill` is fired on both drill up & drill down.
 ```js
 drillBounds.on('drill', function(evt) {
   console.log(evt.layer.feature.properties);
 })
 ```
 
-**Click** is fired when a boundary is clicked or drilled down into.
+`drilldown` is fired when a boundary is drilled down into.
 ```js
-drillBounds.on('click', function(evt) {
+drillBounds.on('drilldown', function(evt) {
   console.log(evt.layer.feature.properties);
 })
 ```
