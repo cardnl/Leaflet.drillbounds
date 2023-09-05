@@ -56,6 +56,9 @@ L.DrillBoundaries = L.FeatureGroup.extend({
     nextLevel.group.getLayers().forEach(l => l.bringToBack());
     layer.setStyle(this._styles.selected);
 
+    this.fire('drilldown', { layer: layer });
+    this.fire('drill', { layer: layer });
+
     return layer;
   },
   drillUp: function () {
@@ -80,6 +83,7 @@ L.DrillBoundaries = L.FeatureGroup.extend({
       if (this._map) {
         this._map.flyToBounds(nextSelected);
       }
+      this.fire('drillup', { layer: nextSelected });
       this.fire('drill', { layer: nextSelected });
     }
   },
@@ -106,8 +110,6 @@ L.DrillBoundaries = L.FeatureGroup.extend({
           return;
         }
         this._drillDown(level, layer);
-        this.fire('drill', { layer: layer });
-        this.fire('click', { layer: layer });
         if (this._map) {
           evt.target._map.flyToBounds(layer);
         }
